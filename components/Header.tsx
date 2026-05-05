@@ -174,7 +174,7 @@ const Header = () => {
                     <Github className="w-6 h-6" />
                   </a>
                   <a
-                    href="linkedin.com/in/keshav-chaudhary-b294aa1aa"
+                    href="https://linkedin.com/in/keshav-chaudhary-b294aa1aa"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-gray-400 hover:text-white transition-colors duration-200"
