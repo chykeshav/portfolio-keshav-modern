@@ -2,7 +2,7 @@
   "name": "Portfolio",
   "version": "0.1.0",
   "private": true,
-  "author": "Ajit Yadav",
+  "author": "keshav chaudhary",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

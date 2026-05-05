@@ -1,21 +1,40 @@
-// "use client";
+"use client";
 
-// import React, {  } from 'react';
-// import { Worker, Viewer } from '@react-pdf-viewer/core';
-// import '@react-pdf-viewer/core/lib/styles/index.css';
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
 
-// interface PdfViewerProps {
-//   pdfUrl: string;
-// }
+// styles (important)
+import "@react-pdf-viewer/core/lib/styles/index.css";
+import "@react-pdf-viewer/default-layout/lib/styles/index.css";
 
-// const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl }) => {
+type PdfViewerProps = {
+  fileUrl: string;
+};
+
+const PdfViewer = ({ fileUrl }: PdfViewerProps) => {
+    const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  return (
+    <div>
+      <div style={{ height: "750px" }}>
+      {/* <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js"> */}
+      <Worker workerUrl={`https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js`}>
+        <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
+      </Worker>
+    </div>
+    </div>
+  );
+};
+
+// const PdfViewer = ({ fileUrl }) => {
+//   const defaultLayoutPluginInstance = defaultLayoutPlugin();
+
 //   return (
-//     <div className="w-full h-full">
-//       <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js">
-//         <Viewer fileUrl={pdfUrl} />
+//     <div style={{ height: "750px" }}>
+//       <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+//         <Viewer fileUrl={fileUrl} plugins={[defaultLayoutPluginInstance]} />
 //       </Worker>
 //     </div>
 //   );
 // };
 
-// export default PdfViewer;
+export default PdfViewer;
