@@ -51,14 +51,31 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true });
 
-  } catch (error: any) {
-    // ✅ FULL ERROR DEBUG
-    console.error("MAIL ERROR FULL:", error);
-    console.error("ERROR MESSAGE:", error?.message);
+  } 
+//   catch (error: any) {
+//     // ✅ FULL ERROR DEBUG
+//     console.error("MAIL ERROR FULL:", error);
+//     console.error("ERROR MESSAGE:", error?.message);
 
-    return NextResponse.json(
-      { error: error?.message || "Failed to send email" },
-      { status: 500 }
-    );
+//     return NextResponse.json(
+//       { error: error?.message || "Failed to send email" },
+//       { status: 500 }
+//     );
+//   }
+catch (error: unknown) {
+  // ✅ FULL ERROR DEBUG
+  console.error("MAIL ERROR FULL:", error);
+
+  let message = "Failed to send email";
+
+  if (error instanceof Error) {
+    console.error("ERROR MESSAGE:", error.message);
+    message = error.message;
   }
+
+  return NextResponse.json(
+    { error: message },
+    { status: 500 }
+  );
+}
 }
