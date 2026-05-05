@@ -1,11 +1,36 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 
 export function ContactSection() {
+  const [message, setMessage] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSend = async () => {
+    if (!message.trim() || !email.trim()) return;
+
+    setStatus("loading");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message, email }),
+      });
+
+      if (res.ok) {
+        setStatus("success");
+        setMessage("");
+        setEmail("");
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
   return (
     <div className="h-[40rem] w-full rounded-md bg-neutral-950 relative flex flex-col items-center justify-center antialiased overflow-hidden">
-      <div className="absolute inset-0 z-0"></div>
-
       <div className="max-w-2xl mx-auto p-6 relative z-10">
         <h1 className="text-lg md:text-7xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-200 to-neutral-600 text-center font-sans font-bold">
           Contact Me
@@ -13,27 +38,45 @@ export function ContactSection() {
         <p className="text-neutral-500 max-w-lg mx-auto my-4 text-sm md:text-base text-center">
           Lets connect and create something amazing together.
         </p>
+
         <div className="flex flex-col md:flex-row gap-4 mt-6">
           <input
             type="text"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
             placeholder="Say Hi Keshav, Let's connect"
-            className="rounded-lg border p-3 border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full bg-neutral-950 placeholder:text-neutral-700"
+            className="rounded-lg border p-3 border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full bg-neutral-950 placeholder:text-neutral-700 text-white"
           />
           <input
-            type="text"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             placeholder="Enter your email here"
-            className="rounded-lg border p-3 border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full bg-neutral-950 placeholder:text-neutral-700"
+            className="rounded-lg border p-3 border-neutral-800 focus:ring-2 focus:ring-teal-500 w-full bg-neutral-950 placeholder:text-neutral-700 text-white"
           />
-          <button className="bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg py-3 px-6 font-medium hover:opacity-90 transition-opacity">
-            Send
+          <button
+            onClick={handleSend}
+            disabled={status === "loading"}
+            className="bg-gradient-to-r from-teal-500 to-teal-700 text-white rounded-lg py-3 px-6 font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {status === "loading" ? "Sending..." : "Send"}
           </button>
         </div>
+
+        {status === "success" && (
+          <p className="text-teal-500 text-sm mt-3 text-center">
+            Message sent successfully!
+          </p>
+        )}
+        {status === "error" && (
+          <p className="text-red-500 text-sm mt-3 text-center">
+            Failed to send. Please try again.
+          </p>
+        )}
+
         <p className="text-neutral-500 text-xs mt-3 text-center">
           Or reach me directly at{" "}
-          <a
-            href="mailto:keshavchaudhary446@gmail.com"
-            className="text-teal-500 hover:underline"
-          >
+          <a href="mailto:keshavchaudhary446@gmail.com" className="text-teal-500 hover:underline">
             keshavchaudhary446@gmail.com
           </a>
         </p>
