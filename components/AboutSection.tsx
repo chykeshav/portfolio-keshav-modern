@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { MapPin, Briefcase, GraduationCap, Code2 } from "lucide-react";
 
 const stats = [
@@ -20,13 +21,11 @@ const highlights = [
 const AboutSection = () => {
   return (
     <section className="relative py-20 px-4 overflow-hidden">
-      {/* Background glow */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-teal-500/5 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-6xl mx-auto">
-        {/* Section Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -41,7 +40,6 @@ const AboutSection = () => {
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left — Photo + Stats */}
           <motion.div
             initial={{ opacity: 0, x: -40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -49,17 +47,17 @@ const AboutSection = () => {
             transition={{ duration: 0.7 }}
             className="flex flex-col items-center gap-8"
           >
-            {/* Photo */}
             <div className="relative">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-teal-500 to-teal-700 blur-lg opacity-40 scale-110" />
-              <img
+              <Image
                 src="/keshav-photo.jpg"
                 alt="Keshav Chaudhary"
+                width={208}
+                height={208}
                 className="relative w-52 h-52 rounded-full object-cover border-4 border-teal-500/50 shadow-2xl"
               />
             </div>
 
-            {/* Stats */}
             <div className="grid grid-cols-2 gap-4 w-full max-w-sm">
               {stats.map((stat, index) => (
                 <motion.div
@@ -77,7 +75,6 @@ const AboutSection = () => {
             </div>
           </motion.div>
 
-          {/* Right — Bio + Highlights */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -85,7 +82,6 @@ const AboutSection = () => {
             transition={{ duration: 0.7 }}
             className="flex flex-col gap-6"
           >
-            {/* Bio */}
             <div className="space-y-4 text-gray-300 text-lg leading-relaxed">
               <p>
                 Hi, I&apos;m <span className="text-white font-semibold">Keshav Chaudhary</span> — a passionate
@@ -103,7 +99,6 @@ const AboutSection = () => {
               </p>
             </div>
 
-            {/* Highlights */}
             <div className="space-y-3 mt-2">
               {highlights.map((item, index) => (
                 <motion.div
