@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: NextRequest) {
   try {
-    // ✅ Parse body (App Router correct way)
     const { message, email } = await req.json();
 
-    // ✅ Validation
     if (!message || !email) {
       return NextResponse.json(
         { error: "All fields required" },
@@ -14,29 +14,9 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ ENV Debug (check terminal)
-    console.log("ENV CHECK:");
-    console.log("USER:", process.env.GMAIL_USER);
-    console.log(
-      "PASS:",
-      process.env.GMAIL_PASS ? "EXISTS" : "MISSING"
-    );
-
-    // ✅ Gmail transporter (stable config)
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS,
-  },
-});
-
-    // ✅ Send mail
-    const info = await transporter.sendMail({
-      from: `"Portfolio Contact" <${process.env.GMAIL_USER}>`,
-      to: process.env.GMAIL_USER,
+    const { error } = await resend.emails.send({
+      from: "Portfolio <onboarding@resend.dev>", // Free plan mein yahi use karo
+      to: "keshavchaudhary446@gmail.com",
       replyTo: email,
       subject: `New message from ${email}`,
       html: `
@@ -47,35 +27,16 @@ export async function POST(req: NextRequest) {
       `,
     });
 
-    console.log("MAIL SENT:", info.response);
+    if (error) {
+      console.error("Resend error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true });
 
-  } 
-//   catch (error: any) {
-//     // ✅ FULL ERROR DEBUG
-//     console.error("MAIL ERROR FULL:", error);
-//     console.error("ERROR MESSAGE:", error?.message);
-
-//     return NextResponse.json(
-//       { error: error?.message || "Failed to send email" },
-//       { status: 500 }
-//     );
-//   }
-catch (error: unknown) {
-  // ✅ FULL ERROR DEBUG
-  console.error("MAIL ERROR FULL:", error);
-
-  let message = "Failed to send email";
-
-  if (error instanceof Error) {
-    console.error("ERROR MESSAGE:", error.message);
-    message = error.message;
+  } catch (error: unknown) {
+    console.error("Server error:", error);
+    const msg = error instanceof Error ? error.message : "Failed to send";
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
-
-  return NextResponse.json(
-    { error: message },
-    { status: 500 }
-  );
-}
 }
