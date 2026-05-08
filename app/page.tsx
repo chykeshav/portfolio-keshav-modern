@@ -1,12 +1,11 @@
 "use client"
 import Header from "../components/Header";
 import HeroSection from "../components/HeroSection";
+import AboutSection from "../components/AboutSection";
 import ProjectsSection from "../components/ProjectsSection";
 import { ContactSection } from "../components/ContactSection";
 import CertificationSlider from "../components/CertificationSlider";
 import AvatarChat from "../components/AvatarChat";
-// import ExperienceMindMap from "../components/ExperienceMindMap";
-
 
 export default function Home() {
   return (
@@ -14,8 +13,8 @@ export default function Home() {
       <Header />
       <main>
         <HeroSection />
+        <AboutSection />
         <ProjectsSection />
-        {/* <ExperienceMindMap /> */}
         <CertificationSlider />
         <ContactSection />
       </main>
