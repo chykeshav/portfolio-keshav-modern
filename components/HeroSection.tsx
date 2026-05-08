@@ -5,20 +5,19 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Download, X } from "lucide-react";
 import { Worker, Viewer } from "@react-pdf-viewer/core";
 import { defaultLayoutPlugin } from "@react-pdf-viewer/default-layout";
+import pdfjsPackage from "pdfjs-dist/package.json";
 
 const HeroSection = () => {
   const [showResume, setShowResume] = useState(false);
   const defaultLayoutPluginInstance = defaultLayoutPlugin();
+  const workerUrl = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsPackage.version}/pdf.worker.min.js`;
 
   return (
     <section className="relative min-h-screen flex flex-col justify-center items-center text-center overflow-hidden">
       <motion.div
         className="absolute inset-0 z-0"
         style={{
-          background: `
-            radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, rgba(240,240,240,0.1) 50%, rgba(230,230,230,0.05) 100%),
-            repeating-linear-gradient(45deg, rgba(250,250,250,0.02) 0, rgba(240,240,240,0.04) 25px, rgba(255,255,255,0.02) 50px)
-          `,
+          background: `radial-gradient(ellipse at center, rgba(255,255,255,0.05) 0%, rgba(240,240,240,0.1) 50%, rgba(230,230,230,0.05) 100%)`,
           backgroundSize: "400% 400%",
           filter: "blur(80px)",
         }}
@@ -96,7 +95,7 @@ const HeroSection = () => {
               </div>
 
               <div className="w-full h-[calc(100%-3.5rem)] overflow-auto">
-                <Worker workerUrl="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js">
+                <Worker workerUrl={workerUrl}>
                   <Viewer
                     fileUrl="/keshav-resumee.pdf"
                     plugins={[defaultLayoutPluginInstance]}
